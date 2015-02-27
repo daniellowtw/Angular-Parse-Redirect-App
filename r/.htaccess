@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+RewriteEngine on
+RewriteBase /r
+
+# Do not rewrite for files or directory
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# everything else redirect to router
+RewriteRule ^ index.html [L]

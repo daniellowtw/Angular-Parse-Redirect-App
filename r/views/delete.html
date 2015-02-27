@@ -1,0 +1,23 @@
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+<div class="container">
+    <div class="alert alert-success" ng-show="success">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> {{success.msg}}
+    </div>
+    <div class="alert alert-danger" ng-show="error">
+        <a class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{error.msg}}
+    </div>
+
+
+    <form role="form">
+        <legend>Delete redirect</legend>
+
+        <div class="form-group">
+            <label for="link">Enter secret code to add link</label>
+            <input type="text" class="form-control" id="secret" placeholder="secret code to delete links" ng-model="secret">
+        </div>
+    
+        <button type="submit" class="btn btn-primary" ng-click="submitDelete(secret);">Submit</button>
+    </form>
+</div>

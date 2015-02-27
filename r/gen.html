@@ -1,0 +1,30 @@
+<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha512.js"></script>
+<div class="container">
+        <h2>Generate Secret Code</h2>
+        
+    <form action="#" method="get" accept-charset="utf-8">
+
+        <div class="form-group">
+            <label for="secret">Enter secret code to add link</label>
+            <br>
+            <input type="text" class="form-control" id="secret" placeholder="secret code to delete links" ng-model="secret">
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="genHash()">Gen code</button>
+    </form>
+
+        <div class="form-group">
+            <label for="secretHash">Secret code for source code</label>
+            <br>
+            <textarea id="secretHash"></textarea>
+        </div>
+    
+</div>
+
+<script>
+    function genHash(){
+        var v = document.getElementById("secret").value
+        var u = document.getElementById("secretHash")
+        u.value = CryptoJS.SHA512(v)
+        return false
+    }
+</script>
