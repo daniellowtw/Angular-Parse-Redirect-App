@@ -12,12 +12,12 @@
 
     <form role="form">
         <legend>Create new redirect</legend>
-    
+
         <div class="form-group">
             <label for="name">Link Name</label>
             <input type="text" class="form-control" id="name" placeholder="Redirect name" ng-model="r">
         </div>
-    
+
 
         <div class="form-group">
             <label for="link">Link URL</label>
@@ -27,10 +27,10 @@
 
         <div class="form-group">
             <label for="link">Enter secret code to add link</label>
-            <input type="text" class="form-control" id="secret" placeholder="secret code to add links" ng-model="secret">
+            <input type="password" class="form-control" id="secret" placeholder="secret code to add links" ng-model="secret">
             <input type="hidden" id="secretHashInput" name="" ng-model="secretHash">
         </div>
-    
+
         <button type="submit" class="btn btn-primary" ng-click="submitFunction(r,l,secret);">Submit</button>
     </form>
 </div>
