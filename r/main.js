@@ -89,7 +89,7 @@ app.controller('addCtrl', function($scope, $routeParams) {
 
     $scope.submitDelete = function(h) {
         // Probably need do this on server before save.
-        if (CryptoJS.SHA512(h).toString() != secretHash) {
+        if (CryptoJS.SHA512(h).toString() != SECRETHASH) {
             $scope.error = {
                 msg: "Wrong code"
             }
