@@ -14,8 +14,37 @@ var app = angular.module('redirect', ['ngRoute'])
                 controller: 'addCtrl'
             })
             .when('/:id', {
-                templateUrl: 'views/temp.html',
-                controller: 'redirectCtrl'
+                templateUrl: 'views/redirect.html',
+                controller: 'redirectCtrl',
+                resolve: {
+                    link: function($q, $route) {
+                        var id = $route.current.params.id
+                        var Redirect = Parse.Object.extend("redirects");
+                        var myLink = $q.defer();
+                        var query = new Parse.Query(Redirect);
+                        query.equalTo("name", id);
+                        query.find({
+                            success: function(results) {
+                                if (results.length) {
+                                    var link = results[0].get('link')
+                                    myLink.resolve({
+                                        message: "You will now be redirected. If you have disabled JavaScript, please click on the following link: ",
+                                        link: link
+                                    })
+                                } else {
+                                    myLink.resolve({
+                                        message: "There is no such link",
+                                        link: ""
+                                    })
+                                }
+                            },
+                            error: function(error) {
+                                myLink.reject("Error: " + error.code + " " + error.message);
+                            }
+                        });
+                        return myLink.promise
+                    }
+                }
             })
             // This along with .htaccess file will allow redirects to be of the form http://server/r/short_code rather than http://server/r/#/short_code. Need to check whether this works as expected for browsers that don't support html5.
         $locationProvider.html5Mode(true)
@@ -24,37 +53,15 @@ var app = angular.module('redirect', ['ngRoute'])
         Parse.initialize(API_KEY, JAVASCRIPT_KEY);
     });
 
-app.controller('mainCtrl', function($scope, $routeParams) {
-    console.log($routeParams)
-})
-app.controller('redirectCtrl', function($scope, $routeParams, $location) {
-    if (!$routeParams['id']) {
-        return
+app.controller('mainCtrl', function($scope, $routeParams) {})
+app.controller('redirectCtrl', function($scope, $routeParams, link) {
+    if (link.message) {
+        $scope.message = link.message
     }
-    var Redirect = Parse.Object.extend("redirects");
-    var query = new Parse.Query(Redirect);
-    query.equalTo("name", $routeParams['id']);
-    query.find({
-        success: function(results) {
-            if (results.length) {
-                var link = results[0].get('link')
-                $scope.$apply(function() {
-                    $scope.message = "You will now be redirected. If you have disabled JavaScript, please click on the following link: "
-                    $scope.link = link
-                })
-                location.href = link
-            } else {
-                $scope.$apply(function() {
-                    $scope.message = "There is no such link"
-                })
-            }
-
-        },
-        error: function(error) {
-            alert("Error: " + error.code + " " + error.message);
-        }
-    });
-
+    if (link.link) {
+        $scope.link = link.link;
+        document.location = link.link
+    }
 })
 
 app.controller('addCtrl', function($scope, $routeParams) {
